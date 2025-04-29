@@ -10,6 +10,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
   maximizeWindow: () => ipcRenderer.send('window-maximize'),
   closeWindow: () => ipcRenderer.send('window-close'),
   
+  // Événement de changement d'état de maximisation
+  onMaximizeChange: (callback) => {
+    ipcRenderer.on('window-maximized', (_, isMaximized) => callback(isMaximized));
+    return () => {
+      ipcRenderer.removeAllListeners('window-maximized');
+    };
+  },
+  
   // Ajout d'une propriété indiquant qu'on est dans Electron
   isElectron: true
 });
