@@ -1,14 +1,53 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "groove-galaxy-maker",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Application de reconnaissance et analyse musicale pour créer des playlists personnalisées",
   "type": "module",
+  "main": "electron/main.js",
+  "author": "yazstonn",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "npm run build && electron-builder",
+    "electron:package": "electron-builder --dir",
+    "electron:make": "electron-builder"
+  },
+  "build": {
+    "appId": "com.groove-galaxy.app",
+    "productName": "Groove Galaxy",
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.music",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Audio"
+    }
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -69,6 +108,9 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^8.2.2",
+    "electron": "^28.2.0",
+    "electron-builder": "^24.13.0", 
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
@@ -78,6 +120,7 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "wait-on": "^7.2.0"
   }
 }
