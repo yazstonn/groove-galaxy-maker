@@ -7,7 +7,10 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
-    port: 8080,
+    port: 5173, // Port par défaut de Vite pour être compatible avec la configuration Electron
+    watch: {
+      usePolling: true,
+    },
   },
   plugins: [
     react(),
@@ -19,4 +22,27 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    // Configuration pour optimiser la sortie pour Electron
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Séparer les bibliothèques React pour améliorer les performances
+          "react-vendor": ["react", "react-dom", "react-router-dom"],
+          // Regrouper les composants UI
+          "ui-components": [
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-alert-dialog",
+            "@radix-ui/react-tabs",
+            "@radix-ui/react-toast",
+            // ... autres composants UI
+          ],
+        },
+      },
+    },
+  },
+  // Optimisation pour l'environnement Electron
+  base: mode === "production" ? "./" : "/", // Chemin relatif en production
 }));
