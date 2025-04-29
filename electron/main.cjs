@@ -27,7 +27,7 @@ function createWindow() {
     frame: false, // Supprime la bordure de fenêtre standard
     titleBarStyle: 'hidden',
     transparent: false,
-    backgroundColor: '#00000000', // Transparent
+    backgroundColor: '#ffffff', // Fond blanc par défaut
     roundedCorners: true,
     thickFrame: true, // Permet le redimensionnement
     show: false, // Ne pas afficher jusqu'à ce que soit prêt
@@ -42,8 +42,7 @@ function createWindow() {
   if (isDev) {
     // En développement, chargez le serveur de développement local
     mainWindow.loadURL('http://localhost:5173');
-    // Ouvre les DevTools.
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
+    // Ne pas ouvrir les DevTools automatiquement
   } else {
     // En production, chargez l'application construite
     mainWindow.loadURL(url.format({
@@ -68,6 +67,15 @@ function createWindow() {
 
   ipcMain.on('window-close', () => {
     mainWindow.close();
+  });
+
+  // Émis lorsque la fenêtre est maximisée ou restaurée
+  mainWindow.on('maximize', () => {
+    mainWindow.webContents.send('window-maximized', true);
+  });
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow.webContents.send('window-maximized', false);
   });
 
   // Émis lorsque la fenêtre est fermée.
