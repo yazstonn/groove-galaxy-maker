@@ -52,10 +52,17 @@
 }
 
 .electron-container {
-  height: calc(100% - 36px); /* Hauteur totale moins hauteur de la barre de titre */
+  flex: 1;
   width: 100%;
   border-radius: 0 !important;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Important : ne pas permettre le débordement au niveau du container */
+}
+
+.electron-app main {
+  overflow: auto; /* Permettre le défilement à l'intérieur du contenu principal */
+  flex: 1;
 }
 
 /* Barre de titre pour macOS */
@@ -115,6 +122,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0; /* Empêche le footer de rétrécir */
+  font-size: 11px;
 }
 
 .dark .electron-footer {
@@ -122,24 +131,43 @@
   background-color: rgba(17, 24, 39, 0.8);
 }
 
-/* Style de la barre de défilement pour l'application desktop */
-.electron-app::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Personnalisation des barres de défilement pour l'application desktop */
+.electron-app ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.electron-app::-webkit-scrollbar-track {
-  background: transparent;
+.electron-app ::-webkit-scrollbar-track {
+  background: transparent; /* Fond transparent */
 }
 
-.electron-app::-webkit-scrollbar-thumb {
-  background-color: rgba(155, 155, 155, 0.5);
-  border-radius: 20px;
-  border: transparent;
+.electron-app ::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 116, 139, 0.2); /* Couleur subtile qui s'adapte au thème */
+  border-radius: 5px;
+  border: 3px solid rgba(248, 250, 252, 0.8); /* Bordure de la couleur du fond */
 }
 
-.electron-app::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(155, 155, 155, 0.8);
+.dark .electron-app ::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.2);
+  border: 3px solid rgba(15, 23, 42, 0.8);
+}
+
+.electron-app ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.4);
+}
+
+.dark .electron-app ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(148, 163, 184, 0.4);
+}
+
+/* Masquer la barre de défilement lorsqu'elle n'est pas utilisée */
+.electron-app ::-webkit-scrollbar-thumb {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.electron-app :hover::-webkit-scrollbar-thumb {
+  opacity: 1;
 }
 
 /* Animation spéciale pour la reconnaissance musicale dans l'app desktop */
@@ -170,5 +198,13 @@
 .windows.electron-app .platform-content,
 .linux.electron-app .platform-content {
   border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+/* Ajustement de la mise en page pour éviter le défilement de la page entière */
+.electron-app .platform-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   overflow: hidden;
 }
