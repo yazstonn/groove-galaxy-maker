@@ -49,20 +49,29 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
+/* Le conteneur principal doit occuper toute la hauteur disponible */
 .electron-container {
-  flex: 1;
-  width: 100%;
-  border-radius: 0 !important;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 32px); /* Hauteur de la fenêtre moins la barre de titre */
   overflow: hidden;
+}
+
+/* Lorsque la barre de titre est présente, ajuster le contenu */
+.custom-titlebar + .electron-container {
+  height: calc(100vh - 8px); /* 8px = hauteur de la barre de titre */
 }
 
 .electron-app main {
   overflow: auto;
   flex: 1;
+  position: relative;
 }
 
 /* Barre de titre pour macOS */
@@ -78,6 +87,7 @@
   z-index: 1000;
   background-color: #f8fafc; /* Couleur de fond claire par défaut */
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  flex-shrink: 0; /* Ne pas rétrécir */
 }
 
 .dark .custom-titlebar {
@@ -92,7 +102,7 @@
 
 /* Animation de transition pour les boutons de la barre de titre */
 .window-control-btn {
-  transition: all 0.2s ease;
+  transition: all 0.1s ease;
   color: #64748b; /* Couleur subtile pour les icônes */
 }
 
@@ -122,7 +132,7 @@
 
 .windows {
   /* Styles spécifiques à Windows */
-  border-radius: 8px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -149,40 +159,40 @@
 }
 
 /* Personnalisation des barres de défilement pour l'application desktop */
-.electron-app ::-webkit-scrollbar {
+.electron-app *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.electron-app ::-webkit-scrollbar-track {
+.electron-app *::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.electron-app ::-webkit-scrollbar-thumb {
+.electron-app *::-webkit-scrollbar-thumb {
   background-color: rgba(100, 116, 139, 0.2);
   border-radius: 4px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
-.dark .electron-app ::-webkit-scrollbar-thumb {
+.dark .electron-app *::-webkit-scrollbar-thumb {
   background-color: rgba(148, 163, 184, 0.2);
 }
 
-.electron-app ::-webkit-scrollbar-thumb:hover {
+.electron-app *::-webkit-scrollbar-thumb:hover {
   background-color: rgba(100, 116, 139, 0.3);
 }
 
-.dark .electron-app ::-webkit-scrollbar-thumb:hover {
+.dark .electron-app *::-webkit-scrollbar-thumb:hover {
   background-color: rgba(148, 163, 184, 0.3);
 }
 
 /* Masquer complètement la barre de défilement lorsqu'elle n'est pas nécessaire */
-.electron-app ::-webkit-scrollbar {
+.electron-app *::-webkit-scrollbar {
   display: none; /* Masquer par défaut */
 }
 
-/* Afficher la barre de défilement uniquement lorsque le contenu dépasse */
+/* Afficher la barre de défilement uniquement si le contenu dépasse */
 .electron-app *:hover::-webkit-scrollbar {
   display: block; /* Afficher au survol, uniquement si le contenu déborde */
 }
@@ -214,7 +224,7 @@
 /* Styles spécifiques pour les coins arrondis sur Windows/Linux */
 .windows.electron-app .platform-content,
 .linux.electron-app .platform-content {
-  border-radius: 0 0 8px 8px;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -224,4 +234,37 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
+}
+
+/* Assurer que le contenu principal dispose de tout l'espace disponible */
+.electron-app .sidebar {
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* Modification de la largeur du root pour les versions web */
+@media only screen and (max-width: 1280px) {
+  #root:not(.electron-app) {
+    max-width: 100%;
+    padding: 1rem;
+  }
+}
+
+/* Assurer que l'application prend toute la hauteur de la fenêtre */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+/* En mode Electron, on veut que l'application occupe toute la fenêtre */
+.electron-app #root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
