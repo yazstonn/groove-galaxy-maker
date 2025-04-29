@@ -21,6 +21,21 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
     return null;
   }
 
+  // Écouter les événements de maximisation de la fenêtre
+  useEffect(() => {
+    if (window.electronAPI) {
+      // S'abonner à l'événement de changement d'état de maximisation
+      const unsubscribe = window.electronAPI.onMaximizeChange((maximized) => {
+        setIsMaximized(maximized);
+      });
+      
+      // Nettoyer lors du démontage du composant
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, []);
+
   // Fonctions pour manipuler la fenêtre Electron (via l'API préchargée)
   const handleMinimize = () => {
     if (window.electronAPI) {
@@ -31,8 +46,7 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
   const handleMaximize = () => {
     if (window.electronAPI) {
       window.electronAPI.maximizeWindow();
-      // On bascule l'état local pour changer l'icône
-      setIsMaximized(!isMaximized);
+      // L'état est mis à jour via l'événement IPC maintenant
     }
   };
 
@@ -45,7 +59,7 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
   return (
     <div 
       className={cn(
-        'custom-titlebar h-9 flex items-center p-0',
+        'custom-titlebar h-8 flex items-center p-0',
         'text-gray-700 dark:text-gray-300',
         className
       )}
@@ -68,30 +82,30 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
       <div className="window-controls flex h-full">
         <button 
           onClick={handleMinimize}
-          className="window-control-btn h-full w-12 flex items-center justify-center focus:outline-none transition-colors"
+          className="window-control-btn h-full w-10 flex items-center justify-center focus:outline-none transition-colors"
           aria-label="Minimize"
         >
-          <Minus className="w-4 h-4" />
+          <Minus className="w-3.5 h-3.5" />
         </button>
         
         <button 
           onClick={handleMaximize}
-          className="window-control-btn h-full w-12 flex items-center justify-center focus:outline-none transition-colors"
+          className="window-control-btn h-full w-10 flex items-center justify-center focus:outline-none transition-colors"
           aria-label={isMaximized ? "Restore" : "Maximize"}
         >
           {isMaximized ? (
-            <Minimize className="w-4 h-4" />
+            <Minimize className="w-3.5 h-3.5" />
           ) : (
-            <Maximize className="w-4 h-4" />
+            <Maximize className="w-3.5 h-3.5" />
           )}
         </button>
         
         <button 
           onClick={handleClose}
-          className="window-control-btn h-full w-12 flex items-center justify-center hover:bg-red-600 hover:text-white focus:outline-none transition-colors"
+          className="window-control-btn h-full w-10 flex items-center justify-center hover:bg-red-600 hover:text-white focus:outline-none transition-colors"
           aria-label="Close"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
