@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, screen } = require('electron');
 const path = require('path');
 const isDev = process.env.NODE_ENV !== 'production';
 const url = require('url');
@@ -8,16 +8,34 @@ const url = require('url');
 let mainWindow;
 
 function createWindow() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  
   // Créer la fenêtre du navigateur.
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    width: Math.min(1280, width * 0.8),
+    height: Math.min(800, height * 0.8),
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.cjs')
     },
-    icon: path.join(__dirname, '../public/music-icon.png')
+    icon: path.join(__dirname, '../public/music-icon.png'),
+    
+    // Paramètres pour une fenêtre personnalisée
+    frame: false, // Supprime la bordure de fenêtre standard
+    titleBarStyle: 'hidden',
+    transparent: false,
+    backgroundColor: '#00000000', // Transparent
+    roundedCorners: true,
+    thickFrame: true, // Permet le redimensionnement
+    show: false, // Ne pas afficher jusqu'à ce que soit prêt
+  });
+
+  // Affiche la fenêtre quand elle est prête pour éviter le flash blanc
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
   });
 
   // Charger l'app
@@ -25,7 +43,7 @@ function createWindow() {
     // En développement, chargez le serveur de développement local
     mainWindow.loadURL('http://localhost:5173');
     // Ouvre les DevTools.
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
     // En production, chargez l'application construite
     mainWindow.loadURL(url.format({
@@ -34,6 +52,23 @@ function createWindow() {
       slashes: true
     }));
   }
+
+  // Gestion des événements IPC pour le contrôle de la fenêtre
+  ipcMain.on('window-minimize', () => {
+    mainWindow.minimize();
+  });
+
+  ipcMain.on('window-maximize', () => {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  });
+
+  ipcMain.on('window-close', () => {
+    mainWindow.close();
+  });
 
   // Émis lorsque la fenêtre est fermée.
   mainWindow.on('closed', function () {
@@ -61,6 +96,3 @@ app.on('activate', function () {
   // l'icône du dock est cliquée et qu'il n'y a pas d'autres fenêtres d'ouvertes.
   if (mainWindow === null) createWindow();
 });
-
-// Dans ce fichier, vous pouvez inclure le reste du code spécifique au processus principal de votre application.
-// Vous pouvez également le mettre dans des fichiers séparés et les inclure ici.
