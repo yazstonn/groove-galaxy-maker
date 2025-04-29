@@ -20,7 +20,11 @@ const AppLayout = ({ children, className }: AppLayoutProps) => {
         isElectron && "electron-container"
       )}>
         <Sidebar />
-        <main className={cn("flex-1 p-6 md:p-10", className)}>
+        <main className={cn(
+          "flex-1 p-6 md:p-10",
+          className,
+          isElectron && "electron-main"
+        )}>
           {children}
         </main>
       </div>
