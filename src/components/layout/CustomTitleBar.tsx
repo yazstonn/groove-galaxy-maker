@@ -45,15 +45,15 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
   return (
     <div 
       className={cn(
-        'custom-titlebar h-9 flex items-center p-0 bg-gradient-to-r from-purple-900/90 to-indigo-900/90 backdrop-blur-md',
-        'border-b border-white/10 text-white shadow-md',
+        'custom-titlebar h-9 flex items-center p-0',
+        'text-gray-700 dark:text-gray-300',
         className
       )}
     >
       {/* Région glissable pour déplacer la fenêtre */}
       <div className="drag-region flex-1 h-full app-drag-region flex items-center px-3">
         <div className="flex items-center space-x-2">
-          <div className="w-4 h-4">
+          <div className="w-4 h-4 text-purple-600 dark:text-purple-400">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 18V5l12-2v13"></path>
               <circle cx="6" cy="18" r="3"></circle>
@@ -68,7 +68,7 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
       <div className="window-controls flex h-full">
         <button 
           onClick={handleMinimize}
-          className="window-control-btn h-full w-12 flex items-center justify-center hover:bg-white/10 focus:outline-none transition-colors"
+          className="window-control-btn h-full w-12 flex items-center justify-center focus:outline-none transition-colors"
           aria-label="Minimize"
         >
           <Minus className="w-4 h-4" />
@@ -76,7 +76,7 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
         
         <button 
           onClick={handleMaximize}
-          className="window-control-btn h-full w-12 flex items-center justify-center hover:bg-white/10 focus:outline-none transition-colors"
+          className="window-control-btn h-full w-12 flex items-center justify-center focus:outline-none transition-colors"
           aria-label={isMaximized ? "Restore" : "Maximize"}
         >
           {isMaximized ? (
@@ -88,7 +88,7 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
         
         <button 
           onClick={handleClose}
-          className="window-control-btn h-full w-12 flex items-center justify-center hover:bg-red-600 focus:outline-none transition-colors"
+          className="window-control-btn h-full w-12 flex items-center justify-center hover:bg-red-600 hover:text-white focus:outline-none transition-colors"
           aria-label="Close"
         >
           <X className="w-4 h-4" />
