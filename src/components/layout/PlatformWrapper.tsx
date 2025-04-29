@@ -1,6 +1,7 @@
 import React from 'react';
 import useAppEnvironment from '../../hooks/useAppEnvironment';
 import { cn } from '@/lib/utils';
+import CustomTitleBar from './CustomTitleBar';
 
 interface PlatformWrapperProps {
   children: React.ReactNode;
@@ -23,21 +24,23 @@ const PlatformWrapper: React.FC<PlatformWrapperProps> = ({ children, className }
     isLinux && 'linux'
   );
 
-  // Si c'est une application Electron, on ajoute une marge en haut pour la barre de titre
-  // sous macOS (qui utilise un style différent)
-  const containerStyle = isMac && isElectron ? { paddingTop: '1.5rem' } : {};
-
   return (
-    <div className={platformClasses} style={containerStyle} data-platform={isElectron ? 'electron' : 'web'}>
-      {isElectron && isMac && (
-        <div className="drag-region h-7 absolute top-0 left-0 right-0 z-50"></div>
-      )}
+    <div className={platformClasses} data-platform={isElectron ? 'electron' : 'web'}>
+      {/* Barre de titre personnalisée pour Windows/Linux en mode Electron */}
+      {isElectron && !isMac && <CustomTitleBar />}
       
-      {children}
+      {/* Si macOS, on ajoute une marge en haut pour la barre de titre native */}
+      <div className={cn(
+        "platform-content w-full h-full",
+        isElectron && isMac && "pt-7" // Espace pour la barre de titre macOS
+      )}>
+        {children}
+      </div>
       
+      {/* Pied de page pour la version desktop */}
       {isElectron && (
         <div className="electron-footer text-center p-2 text-xs text-gray-500 border-t">
-          Groove Galaxy - Application Version
+          Groove Galaxy - Version Desktop
         </div>
       )}
     </div>
