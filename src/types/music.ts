@@ -29,7 +29,14 @@ export interface MusicData {
   energy: number;
   loudness: number;
   duration_sec: number;
-  title?: string; // Optional for display purposes
-  artist?: string; // Optional for display purposes
-  albumArt?: string; // Optional for display purposes
+  title: string; // Titre de la musique
+  artist: string; // Artiste
+  albumArt: string; // URL de la pochette d'album
+  youtubeId?: string; // ID YouTube optionnel
+}
+
+export interface UserMusicLibrary {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  tracks: MusicData[];
 }
