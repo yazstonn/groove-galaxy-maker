@@ -47,18 +47,46 @@
   height: 100vh;
   width: 100vw;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .electron-container {
-  height: 100%;
+  height: calc(100% - 36px); /* Hauteur totale moins hauteur de la barre de titre */
   width: 100%;
   border-radius: 0 !important;
+  overflow: auto;
 }
 
 /* Barre de titre pour macOS */
 .mac-os .drag-region {
   -webkit-app-region: drag; /* Permet de déplacer la fenêtre */
   user-select: none;
+}
+
+/* Styles pour la barre de titre personnalisée */
+.custom-titlebar {
+  -webkit-app-region: drag;
+  user-select: none;
+  z-index: 1000;
+}
+
+/* Les boutons dans la barre de titre ne doivent pas être "draggable" */
+.custom-titlebar button {
+  -webkit-app-region: no-drag;
+}
+
+/* Animation de transition pour les boutons de la barre de titre */
+.window-control-btn {
+  transition: all 0.2s ease;
+}
+
+.window-control-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.window-control-btn:last-child:hover {
+  background-color: rgb(220, 38, 38); /* Rouge pour le bouton de fermeture */
 }
 
 /* Personnalisation pour chaque système d'exploitation */
@@ -70,6 +98,8 @@
 
 .windows {
   /* Styles spécifiques à Windows */
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .linux {
@@ -81,6 +111,10 @@
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   background-color: rgba(249, 250, 251, 0.8);
   backdrop-filter: blur(10px);
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .dark .electron-footer {
@@ -111,6 +145,7 @@
 /* Animation spéciale pour la reconnaissance musicale dans l'app desktop */
 .electron-app .music-gradient {
   animation: gradient-shift 8s ease infinite;
+  background-size: 200% 200%;
 }
 
 @keyframes gradient-shift {
@@ -123,4 +158,17 @@
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Désactiver le contour de focus natif dans l'application Electron */
+.electron-app button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.5); /* Ombre violet pour focus */
+}
+
+/* Styles spécifiques pour les coins arrondis sur Windows/Linux */
+.windows.electron-app .platform-content,
+.linux.electron-app .platform-content {
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
 }
