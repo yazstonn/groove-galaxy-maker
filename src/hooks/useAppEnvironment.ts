@@ -9,6 +9,7 @@ declare global {
       minimizeWindow: () => void;
       maximizeWindow: () => void;
       closeWindow: () => void;
+      onMaximizeChange: (callback: (isMaximized: boolean) => void) => () => void;
     };
   }
 }
