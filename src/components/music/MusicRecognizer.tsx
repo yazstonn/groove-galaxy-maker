@@ -106,21 +106,23 @@ const MusicRecognizer = () => {
         </div>
       </CardContent>
 
-      <style jsx>{`
-        @keyframes ripple {
-          0% {
-            transform: scale(0.1);
-            opacity: 0.4;
+      <style>
+        {`
+          @keyframes ripple {
+            0% {
+              transform: scale(0.1);
+              opacity: 0.4;
+            }
+            50% {
+              opacity: 0.2;
+            }
+            100% {
+              transform: scale(1.6);
+              opacity: 0;
+            }
           }
-          50% {
-            opacity: 0.2;
-          }
-          100% {
-            transform: scale(1.6);
-            opacity: 0;
-          }
-        }
-      `}</style>
+        `}
+      </style>
     </Card>
   );
 };
