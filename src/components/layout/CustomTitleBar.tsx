@@ -15,12 +15,6 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
   const { isElectron, isMac } = useAppEnvironment();
   const [isMaximized, setIsMaximized] = useState(false);
   
-  // Ne rien afficher si nous ne sommes pas dans Electron ou si nous sommes sur macOS
-  // (macOS gère différemment la barre de titre)
-  if (!isElectron || isMac) {
-    return null;
-  }
-
   // Écouter les événements de maximisation de la fenêtre
   useEffect(() => {
     if (window.electronAPI) {
@@ -35,6 +29,12 @@ const CustomTitleBar: React.FC<CustomTitleBarProps> = ({
       };
     }
   }, []);
+
+  // Ne rien afficher si nous ne sommes pas dans Electron ou si nous sommes sur macOS
+  // (macOS gère différemment la barre de titre)
+  if (!isElectron || isMac) {
+    return null;
+  }
 
   // Fonctions pour manipuler la fenêtre Electron (via l'API préchargée)
   const handleMinimize = () => {
