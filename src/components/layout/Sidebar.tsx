@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Music, Headphones, Star } from "lucide-react";
+import { Music, Play, Headphones, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
@@ -35,8 +35,9 @@ const Sidebar = () => {
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
-        <SidebarItem to="/" icon={Music} label="Reconnaissance" collapsed={collapsed} />
-        <SidebarItem to="/playlists" icon={Headphones} label="Mes Playlists" collapsed={collapsed} />
+        <SidebarItem to="/" icon={Play} label="Morceaux" collapsed={collapsed} />
+        <SidebarItem to="/analysis" icon={Music} label="Analyse" collapsed={collapsed} />
+        <SidebarItem to="/playlists" icon={Headphones} label="Playlists" collapsed={collapsed} />
         <SidebarItem to="#" icon={Star} label="Favoris" collapsed={collapsed} />
       </nav>
 
