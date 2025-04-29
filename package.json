@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Application de reconnaissance et analyse musicale pour créer des playlists personnalisées",
   "type": "module",
-  "main": "electron/main.js",
+  "main": "electron/main.cjs",
   "author": "yazstonn",
   "scripts": {
     "dev": "vite",
