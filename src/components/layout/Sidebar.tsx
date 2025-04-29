@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Music, Headphones, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -34,9 +35,9 @@ const Sidebar = () => {
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
-        <SidebarItem icon={Music} label="Reconnaissance" active collapsed={collapsed} />
-        <SidebarItem icon={Headphones} label="Mes Playlists" collapsed={collapsed} />
-        <SidebarItem icon={Star} label="Favoris" collapsed={collapsed} />
+        <SidebarItem to="/" icon={Music} label="Reconnaissance" collapsed={collapsed} />
+        <SidebarItem to="/playlists" icon={Headphones} label="Mes Playlists" collapsed={collapsed} />
+        <SidebarItem to="#" icon={Star} label="Favoris" collapsed={collapsed} />
       </nav>
 
       <div className="p-4 border-t border-border">
@@ -54,11 +55,12 @@ const Sidebar = () => {
 interface SidebarItemProps {
   icon: React.ElementType;
   label: string;
+  to: string;
   active?: boolean;
   collapsed?: boolean;
 }
 
-const SidebarItem = ({ icon: Icon, label, active, collapsed }: SidebarItemProps) => {
+const SidebarItem = ({ icon: Icon, label, to, active, collapsed }: SidebarItemProps) => {
   return (
     <Button
       variant={active ? "secondary" : "ghost"}
@@ -66,9 +68,12 @@ const SidebarItem = ({ icon: Icon, label, active, collapsed }: SidebarItemProps)
         "w-full justify-start", 
         active ? "bg-primary/10 hover:bg-primary/15" : ""
       )}
+      asChild
     >
-      <Icon className="mr-2" />
-      {!collapsed && <span>{label}</span>}
+      <Link to={to}>
+        <Icon className="mr-2" />
+        {!collapsed && <span>{label}</span>}
+      </Link>
     </Button>
   );
 };

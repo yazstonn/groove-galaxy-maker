@@ -24,7 +24,13 @@ const Dashboard = () => {
         </TabsList>
 
         <TabsContent value="recognizer">
-          <MusicRecognizer />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <MusicRecognizer />
+            <div className="space-y-6">
+              <h2 className="text-2xl font-bold">Playlists suggérées</h2>
+              <PlaylistSection className="lg:pt-0" />
+            </div>
+          </div>
         </TabsContent>
 
         <TabsContent value="analysis">
@@ -35,13 +41,6 @@ const Dashboard = () => {
           <PlaylistSection />
         </TabsContent>
       </Tabs>
-
-      <Separator className="my-8" />
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <MusicAnalysis />
-        <PlaylistSection className="lg:pt-8" />
-      </div>
     </div>
   );
 };

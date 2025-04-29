@@ -70,10 +70,10 @@ const MusicRecognizer = () => {
         clearInterval(interval);
         setIsProcessing(false);
         
+        // Changed "success" to "default" to match allowed variant types
         toast({
           title: "Analyse terminée !",
           description: "Votre bibliothèque est prête à être explorée.",
-          variant: "success",
         });
         
         // Ici, on simulerait la redirection vers l'onglet d'analyse ou 
