@@ -40,3 +40,87 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Styles spécifiques à l'application Electron */
+.electron-app {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
+.electron-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0 !important;
+}
+
+/* Barre de titre pour macOS */
+.mac-os .drag-region {
+  -webkit-app-region: drag; /* Permet de déplacer la fenêtre */
+  user-select: none;
+}
+
+/* Personnalisation pour chaque système d'exploitation */
+.mac-os {
+  /* Styles spécifiques à macOS */
+  font-feature-settings: 'kern';
+  -webkit-font-smoothing: antialiased;
+}
+
+.windows {
+  /* Styles spécifiques à Windows */
+}
+
+.linux {
+  /* Styles spécifiques à Linux */
+}
+
+/* Footer spécifique à Electron */
+.electron-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(249, 250, 251, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.dark .electron-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 24, 39, 0.8);
+}
+
+/* Style de la barre de défilement pour l'application desktop */
+.electron-app::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.electron-app::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.electron-app::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
+}
+
+.electron-app::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(155, 155, 155, 0.8);
+}
+
+/* Animation spéciale pour la reconnaissance musicale dans l'app desktop */
+.electron-app .music-gradient {
+  animation: gradient-shift 8s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
