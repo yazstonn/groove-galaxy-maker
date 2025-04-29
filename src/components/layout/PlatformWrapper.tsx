@@ -29,18 +29,18 @@ const PlatformWrapper: React.FC<PlatformWrapperProps> = ({ children, className }
       {/* Barre de titre personnalisée pour Windows/Linux en mode Electron */}
       {isElectron && !isMac && <CustomTitleBar />}
       
-      {/* Si macOS, on ajoute une marge en haut pour la barre de titre native */}
+      {/* Contenu principal de l'application */}
       <div className={cn(
-        "platform-content w-full h-full",
-        isElectron && isMac && "pt-7" // Espace pour la barre de titre macOS
+        "platform-content",
+        isElectron && "electron-container"
       )}>
         {children}
       </div>
       
-      {/* Pied de page pour la version desktop */}
-      {isElectron && (
-        <div className="electron-footer text-center p-2 text-xs text-gray-500 border-t">
-          Groove Galaxy - Version Desktop
+      {/* Pied de page pour la version desktop - optionnel */}
+      {isElectron && false && ( // désactivé pour l'instant (mettre true pour activer)
+        <div className="electron-footer">
+          Groove Galaxy
         </div>
       )}
     </div>
