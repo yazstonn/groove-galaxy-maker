@@ -1,16 +1,15 @@
 
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Music, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface PlaylistSectionProps {
   className?: string;
-  suggested?: boolean;
 }
 
-const PlaylistSection = ({ className, suggested = false }: PlaylistSectionProps) => {
+const PlaylistSection = ({ className }: PlaylistSectionProps) => {
   const recentPlaylists = [
     {
       id: 1,
@@ -35,40 +34,18 @@ const PlaylistSection = ({ className, suggested = false }: PlaylistSectionProps)
     }
   ];
 
-  const suggestedPlaylists = [
-    {
-      id: 4,
-      name: "Mix Pop 2024",
-      tracks: 10,
-      image: "https://images.unsplash.com/photo-1496293455970-f8581aae0e3b?w=800&auto=format&fit=crop&q=60",
-      primaryGenre: "Pop"
-    },
-    {
-      id: 5,
-      name: "Découvertes Rock",
-      tracks: 8,
-      image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&auto=format&fit=crop&q=60",
-      primaryGenre: "Rock"
-    }
-  ];
-
-  const displayPlaylists = suggested ? suggestedPlaylists : recentPlaylists;
-  const title = suggested ? "Playlists Suggérées" : "Mes Playlists";
-
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">{title}</h2>
-        {!suggested && (
-          <Button variant="outline">
-            <Plus className="w-4 h-4 mr-2" />
-            Nouvelle Playlist
-          </Button>
-        )}
+        <h2 className="text-2xl font-bold">Mes Playlists</h2>
+        <Button variant="outline">
+          <Plus className="w-4 h-4 mr-2" />
+          Nouvelle Playlist
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayPlaylists.map((playlist) => (
+        {recentPlaylists.map((playlist) => (
           <Card key={playlist.id} className="glass-card overflow-hidden group transition-all hover:shadow-lg">
             <div className="relative h-32 overflow-hidden">
               <img
@@ -105,16 +82,14 @@ const PlaylistSection = ({ className, suggested = false }: PlaylistSectionProps)
           </Card>
         ))}
 
-        {!suggested && (
-          <Card className="glass-card border-dashed flex items-center justify-center h-[168px]">
-            <div className="text-center p-4">
-              <div className="w-12 h-12 rounded-full bg-secondary/80 mx-auto flex items-center justify-center mb-2">
-                <Plus className="w-6 h-6 text-muted-foreground" />
-              </div>
-              <p className="text-muted-foreground">Ajouter une playlist</p>
+        <Card className="glass-card border-dashed flex items-center justify-center h-[168px]">
+          <div className="text-center p-4">
+            <div className="w-12 h-12 rounded-full bg-secondary/80 mx-auto flex items-center justify-center mb-2">
+              <Plus className="w-6 h-6 text-muted-foreground" />
             </div>
-          </Card>
-        )}
+            <p className="text-muted-foreground">Ajouter une playlist</p>
+          </div>
+        </Card>
       </div>
     </div>
   );
