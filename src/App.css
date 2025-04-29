@@ -59,7 +59,6 @@
   flex-direction: column;
   flex: 1;
   width: 100%;
-  height: calc(100vh - 32px); /* Hauteur de la fenêtre moins la barre de titre */
   overflow: hidden;
 }
 
@@ -189,12 +188,12 @@
 
 /* Masquer complètement la barre de défilement lorsqu'elle n'est pas nécessaire */
 .electron-app *::-webkit-scrollbar {
-  display: none; /* Masquer par défaut */
+  visibility: hidden; /* Utiliser visibility au lieu de display pour éviter les sauts */
 }
 
 /* Afficher la barre de défilement uniquement si le contenu dépasse */
 .electron-app *:hover::-webkit-scrollbar {
-  display: block; /* Afficher au survol, uniquement si le contenu déborde */
+  visibility: visible; /* Afficher au survol, uniquement si le contenu déborde */
 }
 
 /* Animation spéciale pour la reconnaissance musicale dans l'app desktop */
@@ -258,13 +257,47 @@ html, body {
   overflow: hidden;
 }
 
+body {
+  background-color: #f8fafc; /* Couleur de fond par défaut */
+}
+
+.dark body {
+  background-color: #0f172a; /* Couleur de fond en mode sombre */
+}
+
 #root {
   height: 100%;
 }
 
 /* En mode Electron, on veut que l'application occupe toute la fenêtre */
-.electron-app #root {
-  max-width: none;
-  margin: 0;
-  padding: 0;
+.electron-app {
+  height: 100vh;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fix pour s'assurer que les éléments internes sont visibles */
+.electron-app .custom-titlebar,
+.electron-app .platform-content,
+.electron-app .min-h-screen {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Fix pour le contenu blanc */
+.electron-app,
+.platform-content,
+.min-h-screen,
+.w-full,
+.flex-1,
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+.electron-app main {
+  display: block;
+  background-color: inherit;
 }
