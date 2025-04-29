@@ -68,7 +68,7 @@
 }
 
 .electron-app main {
-  overflow: auto;
+  overflow: auto; /* Permet le défilement si nécessaire */
   flex: 1;
   position: relative;
 }
@@ -157,96 +157,11 @@
   background-color: #0f172a;
 }
 
-/* Personnalisation des barres de défilement pour l'application desktop */
-.electron-app *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.electron-app *::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.electron-app *::-webkit-scrollbar-thumb {
-  background-color: rgba(100, 116, 139, 0.2);
-  border-radius: 4px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-.dark .electron-app *::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.2);
-}
-
-.electron-app *::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(100, 116, 139, 0.3);
-}
-
-.dark .electron-app *::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(148, 163, 184, 0.3);
-}
-
-/* Masquer complètement la barre de défilement lorsqu'elle n'est pas nécessaire */
-.electron-app *::-webkit-scrollbar {
-  visibility: hidden; /* Utiliser visibility au lieu de display pour éviter les sauts */
-}
-
-/* Afficher la barre de défilement uniquement si le contenu dépasse */
-.electron-app *:hover::-webkit-scrollbar {
-  visibility: visible; /* Afficher au survol, uniquement si le contenu déborde */
-}
-
-/* Animation spéciale pour la reconnaissance musicale dans l'app desktop */
-.electron-app .music-gradient {
-  animation: gradient-shift 8s ease infinite;
-  background-size: 200% 200%;
-}
-
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Désactiver le contour de focus natif dans l'application Electron */
-.electron-app button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.5);
-}
-
-/* Styles spécifiques pour les coins arrondis sur Windows/Linux */
-.windows.electron-app .platform-content,
-.linux.electron-app .platform-content {
-  border-radius: 0;
-  overflow: hidden;
-}
-
-/* Ajustement de la mise en page pour éviter le défilement de la page entière */
-.electron-app .platform-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* Assurer que le contenu principal dispose de tout l'espace disponible */
-.electron-app .sidebar {
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-
-/* Modification de la largeur du root pour les versions web */
-@media only screen and (max-width: 1280px) {
-  #root:not(.electron-app) {
-    max-width: 100%;
-    padding: 1rem;
-  }
+/* Cacher complètement TOUTES les barres de défilement dans l'application Electron */
+.electron-app ::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Assurer que l'application prend toute la hauteur de la fenêtre */
@@ -300,4 +215,12 @@ main {
 .electron-app main {
   display: block;
   background-color: inherit;
+}
+
+/* Ajouter l'effet de défilement fluide même si la barre est masquée */
+.electron-app * {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
