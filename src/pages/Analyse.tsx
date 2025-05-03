@@ -11,7 +11,7 @@ const Analyse = () => {
         <div className="space-y-2">
           <h1 className="text-4xl font-bold">Analyse Musicale</h1>
           <p className="text-muted-foreground text-lg">
-            Explorez les données et caractéristiques de votre bibliothèque musicale
+            Explorez les caractéristiques détaillées de vos morceaux
           </p>
         </div>
         

@@ -1,7 +1,6 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Music, Headphones, Star, BarChartHorizontal, Library } from "lucide-react";
+import { Music, Headphones, Star, BarChartHorizontal, Library, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 
@@ -49,6 +48,13 @@ const Sidebar = () => {
           label="Analyse" 
           collapsed={collapsed} 
           active={location.pathname.includes("/analyse")}
+        />
+        <SidebarItem 
+          to="/statistics" 
+          icon={PieChart} 
+          label="Statistiques" 
+          collapsed={collapsed} 
+          active={location.pathname.includes("/statistics")}
         />
         <SidebarItem 
           to="/playlists" 

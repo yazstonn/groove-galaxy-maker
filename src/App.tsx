@@ -9,6 +9,7 @@ import Playlists from "./pages/Playlists";
 import Musiques from "./pages/Musiques";
 import TrackDetail from "./pages/TrackDetail";
 import Analyse from "./pages/Analyse";
+import Statistics from "./pages/Statistics";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/musiques" element={<Musiques />} />
           <Route path="/track/:id" element={<TrackDetail />} />
           <Route path="/analyse" element={<Analyse />} />
+          <Route path="/statistics" element={<Statistics />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
