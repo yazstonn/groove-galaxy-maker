@@ -4,12 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Music, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface PlaylistSectionProps {
   className?: string;
 }
 
 const PlaylistSection = ({ className }: PlaylistSectionProps) => {
+  const navigate = useNavigate();
+  
   const recentPlaylists = [
     {
       id: 1,
@@ -34,11 +37,19 @@ const PlaylistSection = ({ className }: PlaylistSectionProps) => {
     }
   ];
 
+  const handlePlaylistClick = (playlist: typeof recentPlaylists[0]) => {
+    navigate('/playlist/create', { state: { playlist } });
+  };
+
+  const handleCreatePlaylist = () => {
+    navigate('/playlist/create');
+  };
+
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Mes Playlists</h2>
-        <Button variant="outline">
+        <Button variant="outline" onClick={handleCreatePlaylist}>
           <Plus className="w-4 h-4 mr-2" />
           Nouvelle Playlist
         </Button>
@@ -46,7 +57,11 @@ const PlaylistSection = ({ className }: PlaylistSectionProps) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recentPlaylists.map((playlist) => (
-          <Card key={playlist.id} className="glass-card overflow-hidden group transition-all hover:shadow-lg">
+          <Card 
+            key={playlist.id} 
+            className="glass-card overflow-hidden group transition-all hover:shadow-lg cursor-pointer"
+            onClick={() => handlePlaylistClick(playlist)}
+          >
             <div className="relative h-32 overflow-hidden">
               <img
                 src={playlist.image}
@@ -82,7 +97,10 @@ const PlaylistSection = ({ className }: PlaylistSectionProps) => {
           </Card>
         ))}
 
-        <Card className="glass-card border-dashed flex items-center justify-center h-[168px]">
+        <Card 
+          className="glass-card border-dashed flex items-center justify-center h-[168px] cursor-pointer"
+          onClick={handleCreatePlaylist}
+        >
           <div className="text-center p-4">
             <div className="w-12 h-12 rounded-full bg-secondary/80 mx-auto flex items-center justify-center mb-2">
               <Plus className="w-6 h-6 text-muted-foreground" />
