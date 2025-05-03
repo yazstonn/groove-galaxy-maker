@@ -1,12 +1,13 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Music, Headphones, Star } from "lucide-react";
+import { Music, Headphones, Star, BarChartHorizontal, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
 
   return (
     <aside
@@ -35,9 +36,34 @@ const Sidebar = () => {
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
-        <SidebarItem to="/" icon={Music} label="Reconnaissance" collapsed={collapsed} />
-        <SidebarItem to="/playlists" icon={Headphones} label="Mes Playlists" collapsed={collapsed} />
-        <SidebarItem to="#" icon={Star} label="Favoris" collapsed={collapsed} />
+        <SidebarItem 
+          to="/musiques" 
+          icon={Library} 
+          label="Musiques" 
+          collapsed={collapsed} 
+          active={location.pathname.includes("/musiques") || location.pathname === "/" || location.pathname.includes("/track/")}
+        />
+        <SidebarItem 
+          to="/analyse" 
+          icon={BarChartHorizontal} 
+          label="Analyse" 
+          collapsed={collapsed} 
+          active={location.pathname.includes("/analyse")}
+        />
+        <SidebarItem 
+          to="/playlists" 
+          icon={Headphones} 
+          label="Playlists" 
+          collapsed={collapsed} 
+          active={location.pathname.includes("/playlists")}
+        />
+        <SidebarItem 
+          to="/favoris" 
+          icon={Star} 
+          label="Favoris" 
+          collapsed={collapsed} 
+          active={location.pathname.includes("/favoris")}
+        />
       </nav>
 
       <div className="p-4 border-t border-border">
