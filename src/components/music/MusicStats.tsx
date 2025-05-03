@@ -24,7 +24,6 @@ import {
   Legend,
   ResponsiveContainer,
   RadarChart,
-  RadarLine,
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
@@ -33,7 +32,7 @@ import {
   ScatterChart,
   ZAxis
 } from "recharts";
-import { ChartPie, ChartBarHorizontal, ChartBar, ChartScatter, ChartLine } from "lucide-react";
+import { PieChart as PieChartIcon, BarChartHorizontal, BarChart as BarChartIcon, ScatterChart as ScatterChartIcon, LineChart as LineChartIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface MusicStatsProps {
@@ -205,7 +204,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                   <CardTitle>Distribution des Genres</CardTitle>
                   <CardDescription>Répartition par genre musical</CardDescription>
                 </div>
-                <ChartPie className="h-5 w-5 text-muted-foreground" />
+                <PieChartIcon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="pt-0">
                 <ChartContainer 
@@ -246,7 +245,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                   <CardTitle>Distribution des BPM</CardTitle>
                   <CardDescription>Répartition par tempo</CardDescription>
                 </div>
-                <ChartBar className="h-5 w-5 text-muted-foreground" />
+                <BarChartIcon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="pt-0">
                 <ChartContainer 
@@ -273,7 +272,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                 <CardTitle>Énergie vs. BPM</CardTitle>
                 <CardDescription>Corrélation entre énergie et tempo</CardDescription>
               </div>
-              <ChartScatter className="h-5 w-5 text-muted-foreground" />
+              <ScatterChartIcon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="pt-0">
               <ChartContainer 
@@ -312,7 +311,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                   <CardTitle>Distribution des Genres</CardTitle>
                   <CardDescription>Répartition par genre musical</CardDescription>
                 </div>
-                <ChartPie className="h-5 w-5 text-muted-foreground" />
+                <PieChartIcon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="pt-0">
                 <ChartContainer 
@@ -353,7 +352,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                   <CardTitle>Distribution des Ambiances</CardTitle>
                   <CardDescription>Répartition par ambiance musicale</CardDescription>
                 </div>
-                <ChartPie className="h-5 w-5 text-muted-foreground" />
+                <PieChartIcon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="pt-0">
                 <ChartContainer 
@@ -394,7 +393,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                 <CardTitle>Énergie Moyenne par Genre</CardTitle>
                 <CardDescription>Niveau d'énergie moyen par genre</CardDescription>
               </div>
-              <ChartBarHorizontal className="h-5 w-5 text-muted-foreground" />
+              <BarChartHorizontal className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="pt-0">
               <ChartContainer 
@@ -427,7 +426,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                   <CardTitle>Distribution des BPM</CardTitle>
                   <CardDescription>Répartition par tempo</CardDescription>
                 </div>
-                <ChartBar className="h-5 w-5 text-muted-foreground" />
+                <BarChartIcon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="pt-0">
                 <ChartContainer 
@@ -453,7 +452,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                   <CardTitle>Durée des Morceaux</CardTitle>
                   <CardDescription>Distribution par durée</CardDescription>
                 </div>
-                <ChartBar className="h-5 w-5 text-muted-foreground" />
+                <BarChartIcon className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent className="pt-0">
                 <ChartContainer 
@@ -480,7 +479,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                 <CardTitle>Énergie vs. BPM</CardTitle>
                 <CardDescription>Corrélation entre énergie et tempo</CardDescription>
               </div>
-              <ChartScatter className="h-5 w-5 text-muted-foreground" />
+              <ScatterChartIcon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="pt-0">
               <ChartContainer 
@@ -518,7 +517,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                 <CardTitle>Prévalence des Instruments</CardTitle>
                 <CardDescription>Instruments les plus utilisés</CardDescription>
               </div>
-              <ChartBarHorizontal className="h-5 w-5 text-muted-foreground" />
+              <BarChartHorizontal className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="pt-0">
               <ChartContainer 
@@ -548,7 +547,7 @@ const MusicStats: React.FC<MusicStatsProps> = ({ tracks }) => {
                 <CardTitle>Empreinte Instrumentale</CardTitle>
                 <CardDescription>Distribution des instruments</CardDescription>
               </div>
-              <ChartLine className="h-5 w-5 text-muted-foreground" />
+              <LineChartIcon className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
             <CardContent className="pt-0">
               <ChartContainer 

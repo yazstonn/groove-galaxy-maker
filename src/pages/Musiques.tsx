@@ -102,10 +102,19 @@ const sampleTracks: MusicData[] = [
   }
 ];
 
+// Définir le type pour les filtres
+interface FiltersType {
+  genres: string[];
+  moods: string[];
+  bpmRange: [number, number];
+  energy: [number, number];
+  instruments: string[];
+}
+
 const Musiques = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTracks, setFilteredTracks] = useState(sampleTracks);
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FiltersType>({
     genres: [],
     moods: [],
     bpmRange: [0, 200],

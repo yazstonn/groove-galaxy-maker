@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { useQuery } from "@tanstack/react-query";
 import MusicStats from "@/components/music/MusicStats";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MusicData } from "@/types/music";
 
 const Statistics = () => {
   const { data: tracks, isLoading } = useQuery({
@@ -12,7 +13,7 @@ const Statistics = () => {
     queryFn: async () => {
       // In a real app, this would fetch from an API
       // For now, let's simulate some delay and return mock data
-      return new Promise((resolve) => {
+      return new Promise<MusicData[]>((resolve) => {
         setTimeout(() => {
           // Using mock data from src/components/music/MusicAnalysis.tsx
           const mockData = Array(20).fill(null).map((_, index) => ({
