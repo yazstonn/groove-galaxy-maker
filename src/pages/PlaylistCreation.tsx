@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import { MusicData } from "@/types/music";
@@ -14,6 +13,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import AddYoutubeTrack from "@/components/music/AddYoutubeTrack";
 
 // Sample data - in a real app, this would come from an API or be passed as props
 const sampleTracks: MusicData[] = [
@@ -236,8 +236,11 @@ const PlaylistCreation = () => {
                   )}
                 />
 
-                <div className="pt-4">
+                <div className="pt-4 space-y-2">
                   <Button type="submit">Créer la playlist</Button>
+                  <div className="mt-2">
+                    <AddYoutubeTrack onAddTrack={handleAddTrack} />
+                  </div>
                 </div>
               </div>
               
@@ -333,14 +336,19 @@ const PlaylistCreation = () => {
         <Separator />
         
         <div className="space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input 
-              className="pl-10" 
-              placeholder="Rechercher par titre, artiste, genre..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="flex justify-between items-center">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input 
+                className="pl-10" 
+                placeholder="Rechercher par titre, artiste, genre..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="ml-2">
+              <AddYoutubeTrack onAddTrack={handleAddTrack} />
+            </div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

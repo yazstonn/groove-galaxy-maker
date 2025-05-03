@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import { MusicData } from "@/types/music";
@@ -7,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import MusicFilters from "@/components/music/MusicFilters";
 import { Search } from "lucide-react";
+import AddYoutubeTrack from "@/components/music/AddYoutubeTrack";
+import { toast } from "sonner";
 
 // Sample data - in a real app, this would come from an API
 const sampleTracks: MusicData[] = [
@@ -122,6 +123,15 @@ const Musiques = () => {
     instruments: []
   });
 
+  const handleAddTrack = (track: MusicData) => {
+    if (!filteredTracks.some(t => t.id === track.id)) {
+      setFilteredTracks([...filteredTracks, track]);
+      toast.success(`${track.title} ajouté à votre bibliothèque`);
+    } else {
+      toast.info(`${track.title} est déjà dans votre bibliothèque`);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="space-y-6">
@@ -132,14 +142,17 @@ const Musiques = () => {
           </p>
         </div>
         
-        <div className="relative">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input 
-            className="pl-10" 
-            placeholder="Rechercher par titre, artiste, genre..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input 
+              className="pl-10" 
+              placeholder="Rechercher par titre, artiste, genre..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <AddYoutubeTrack onAddTrack={handleAddTrack} />
         </div>
         
         <Separator />
