@@ -1,13 +1,32 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Music, Headphones, Star, BarChartHorizontal, Library, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+
+  const handleSuccess = (credentialResponse: any) => {
+    const idToken = credentialResponse.credential;
+
+    fetch("/api/auth/google", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("User info:", data);
+        // Optionnel : stocker utilisateur, rediriger, etc.
+      });
+  };
+
+  const handleError = () => {
+    console.error("Google login failed");
+  };
 
   return (
     <aside
@@ -17,16 +36,16 @@ const Sidebar = () => {
       )}
     >
       <div className="p-4 flex items-center justify-between border-b border-border">
-        <h1 
+        <h1
           className={cn(
-            "font-bold text-xl transition-opacity", 
+            "font-bold text-xl transition-opacity",
             collapsed ? "opacity-0 w-0" : "opacity-100"
           )}
         >
           Groove Galaxy
         </h1>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size="icon"
           onClick={() => setCollapsed(!collapsed)}
           className="ml-auto"
@@ -36,49 +55,55 @@ const Sidebar = () => {
       </div>
 
       <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-        <SidebarItem 
-          to="/musiques" 
-          icon={Library} 
-          label="Musiques" 
-          collapsed={collapsed} 
-          active={location.pathname.includes("/musiques") || location.pathname === "/" || location.pathname.includes("/track/")}
+        <SidebarItem
+          to="/musiques"
+          icon={Library}
+          label="Musiques"
+          collapsed={collapsed}
+          active={
+            location.pathname.includes("/musiques") ||
+            location.pathname === "/" ||
+            location.pathname.includes("/track/")
+          }
         />
-        <SidebarItem 
-          to="/analyse" 
-          icon={BarChartHorizontal} 
-          label="Analyse" 
-          collapsed={collapsed} 
+        <SidebarItem
+          to="/analyse"
+          icon={BarChartHorizontal}
+          label="Analyse"
+          collapsed={collapsed}
           active={location.pathname.includes("/analyse")}
         />
-        <SidebarItem 
-          to="/statistics" 
-          icon={PieChart} 
-          label="Statistiques" 
-          collapsed={collapsed} 
+        <SidebarItem
+          to="/statistics"
+          icon={PieChart}
+          label="Statistiques"
+          collapsed={collapsed}
           active={location.pathname.includes("/statistics")}
         />
-        <SidebarItem 
-          to="/playlists" 
-          icon={Headphones} 
-          label="Playlists" 
-          collapsed={collapsed} 
+        <SidebarItem
+          to="/playlists"
+          icon={Headphones}
+          label="Playlists"
+          collapsed={collapsed}
           active={location.pathname.includes("/playlists")}
         />
-        <SidebarItem 
-          to="/favoris" 
-          icon={Star} 
-          label="Favoris" 
-          collapsed={collapsed} 
+        <SidebarItem
+          to="/favoris"
+          icon={Star}
+          label="Favoris"
+          collapsed={collapsed}
           active={location.pathname.includes("/favoris")}
         />
       </nav>
 
       <div className="p-4 border-t border-border">
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-medium">U</span>
-          </div>
-          {!collapsed && <span className="font-medium">Utilisateur</span>}
+          <GoogleLogin
+            onSuccess={handleSuccess}
+            onError={handleError}
+            size={collapsed ? "small" : "medium"}
+            theme="filled_black"
+          />
         </div>
       </div>
     </aside>
@@ -98,7 +123,7 @@ const SidebarItem = ({ icon: Icon, label, to, active, collapsed }: SidebarItemPr
     <Button
       variant={active ? "secondary" : "ghost"}
       className={cn(
-        "w-full justify-start", 
+        "w-full justify-start",
         active ? "bg-primary/10 hover:bg-primary/15" : ""
       )}
       asChild

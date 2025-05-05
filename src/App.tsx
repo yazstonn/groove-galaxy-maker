@@ -11,10 +11,12 @@ import TrackDetail from "./pages/TrackDetail";
 import Analyse from "./pages/Analyse";
 import Statistics from "./pages/Statistics";
 import PlaylistCreation from "./pages/PlaylistCreation";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const queryClient = new QueryClient();
 
 const App = () => (
+  <GoogleOAuthProvider clientId="TON_CLIENT_ID_GOOGLE">
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -33,6 +35,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </GoogleOAuthProvider>
 );
 
 export default App;
