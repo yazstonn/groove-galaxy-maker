@@ -16,7 +16,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <GoogleOAuthProvider clientId="TON_CLIENT_ID_GOOGLE">
+  <GoogleOAuthProvider clientId="1049306400638-cbkjugjqa606cpgsd2tfhuml6ch9e2l1.apps.googleusercontent.com">
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />

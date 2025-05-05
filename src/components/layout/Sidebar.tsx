@@ -13,7 +13,7 @@ const Sidebar = () => {
   const handleSuccess = (credentialResponse: any) => {
     const idToken = credentialResponse.credential;
 
-    fetch("/api/auth/google", {
+    fetch("http://localhost:5259/api/auth/google", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ idToken }),
@@ -104,22 +104,18 @@ const Sidebar = () => {
             collapsed ? "w-10 h-10" : "w-full"
           )}>
             <div 
-              className={cn(
-                "bg-music-purple rounded-full overflow-hidden flex items-center justify-center",
-                collapsed ? "w-10 h-10" : "w-full py-2 px-4 rounded-md"
-              )}
-              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+              
             >
               <GoogleLogin
                 onSuccess={handleSuccess}
                 onError={handleError}
                 size={collapsed ? "small" : "medium"}
-                theme="filled_black"
+                theme="outline"
                 useOneTap
                 type={collapsed ? "icon" : "standard"}
                 shape="pill"
                 logo_alignment="center"
-                text={collapsed ? "signin" : "signin_with"}
+                text={collapsed ? "signin" : "signin"}
                 context={collapsed ? "signin" : "signin"}
                 width={collapsed ? "40px" : "100%"}
               />
