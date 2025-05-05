@@ -4,7 +4,7 @@ import AppLayout from "@/components/layout/AppLayout";
 import PlaylistSection from "@/components/music/PlaylistSection";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PlaylistAdd, ListMusic, Gear } from "lucide-react";
+import { PlusCircle, ListMusic, Settings } from "lucide-react";
 import MusicRecognizer from "@/components/music/MusicRecognizer";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ const Playlists = () => {
           </div>
           
           <Button onClick={handleCreatePlaylist}>
-            <PlaylistAdd className="mr-2 h-4 w-4" />
+            <PlusCircle className="mr-2 h-4 w-4" />
             Nouvelle Playlist
           </Button>
         </div>
@@ -42,7 +42,7 @@ const Playlists = () => {
               Playlists Manuelles
             </TabsTrigger>
             <TabsTrigger value="auto" className="flex items-center gap-2">
-              <Gear className="h-4 w-4" />
+              <Settings className="h-4 w-4" />
               Playlists Automatiques
             </TabsTrigger>
           </TabsList>
