@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Music, Headphones, Star, BarChartHorizontal, Library, PieChart } from "lucide-react";
@@ -11,7 +12,7 @@ const Sidebar = () => {
   return (
     <aside
       className={cn(
-        "bg-secondary/50 backdrop-blur-lg border-r border-border h-screen flex flex-col transition-all duration-300",
+        "bg-secondary/50 backdrop-blur-lg border-r border-border fixed h-screen flex flex-col transition-all duration-300 z-10",
         collapsed ? "w-16" : "w-64"
       )}
     >
@@ -34,7 +35,7 @@ const Sidebar = () => {
         </Button>
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
         <SidebarItem 
           to="/musiques" 
           icon={Library} 
