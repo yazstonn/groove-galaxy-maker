@@ -103,42 +103,27 @@ const Sidebar = () => {
             "rounded-md overflow-hidden",
             collapsed ? "w-10 h-10" : "w-full"
           )}>
-            <GoogleLogin
-              onSuccess={handleSuccess}
-              onError={handleError}
-              size={collapsed ? "small" : "medium"}
-              theme="filled_black"
-              useOneTap
-              type={collapsed ? "icon" : "standard"}
-              shape="pill"
-              logo_alignment="center"
-              text={collapsed ? "signin" : "signin_with"}
-              context={collapsed ? "signin" : "signin"}
-              width={collapsed ? "40px" : "100%"}
-              custom_style={{
-                container: {
-                  backgroundColor: "#9b87f5",
-                  border: "none",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                  width: collapsed ? "40px" : "100%",
-                  height: collapsed ? "40px" : "auto",
-                  padding: collapsed ? "0" : "2px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  overflow: "hidden"
-                },
-                icon: {
-                  margin: collapsed ? "0" : "0 8px 0 0"
-                },
-                text: {
-                  color: "white",
-                  fontWeight: "500",
-                  fontSize: "14px",
-                  fontFamily: "system-ui, sans-serif"
-                }
-              }}
-            />
+            <div 
+              className={cn(
+                "bg-music-purple rounded-full overflow-hidden flex items-center justify-center",
+                collapsed ? "w-10 h-10" : "w-full py-2 px-4 rounded-md"
+              )}
+              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+            >
+              <GoogleLogin
+                onSuccess={handleSuccess}
+                onError={handleError}
+                size={collapsed ? "small" : "medium"}
+                theme="filled_black"
+                useOneTap
+                type={collapsed ? "icon" : "standard"}
+                shape="pill"
+                logo_alignment="center"
+                text={collapsed ? "signin" : "signin_with"}
+                context={collapsed ? "signin" : "signin"}
+                width={collapsed ? "40px" : "100%"}
+              />
+            </div>
           </div>
         </div>
       </div>
