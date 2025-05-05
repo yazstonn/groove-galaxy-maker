@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Music, Headphones, Star, BarChartHorizontal, Library, PieChart } from "lucide-react";
@@ -97,13 +98,48 @@ const Sidebar = () => {
       </nav>
 
       <div className="p-4 border-t border-border">
-        <div className="flex items-center space-x-3">
-          <GoogleLogin
-            onSuccess={handleSuccess}
-            onError={handleError}
-            size={collapsed ? "small" : "medium"}
-            theme="filled_black"
-          />
+        <div className={cn("flex items-center", collapsed ? "justify-center" : "justify-start")}>
+          <div className={cn(
+            "rounded-md overflow-hidden",
+            collapsed ? "w-10 h-10" : "w-full"
+          )}>
+            <GoogleLogin
+              onSuccess={handleSuccess}
+              onError={handleError}
+              size={collapsed ? "small" : "medium"}
+              theme="filled_black"
+              useOneTap
+              type={collapsed ? "icon" : "standard"}
+              shape="pill"
+              logo_alignment="center"
+              text={collapsed ? "signin" : "signin_with"}
+              context={collapsed ? "signin" : "signin"}
+              width={collapsed ? "40px" : "100%"}
+              custom_style={{
+                container: {
+                  backgroundColor: "#9b87f5",
+                  border: "none",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  width: collapsed ? "40px" : "100%",
+                  height: collapsed ? "40px" : "auto",
+                  padding: collapsed ? "0" : "2px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflow: "hidden"
+                },
+                icon: {
+                  margin: collapsed ? "0" : "0 8px 0 0"
+                },
+                text: {
+                  color: "white",
+                  fontWeight: "500",
+                  fontSize: "14px",
+                  fontFamily: "system-ui, sans-serif"
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
     </aside>
