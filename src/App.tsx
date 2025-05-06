@@ -11,6 +11,7 @@ import TrackDetail from "./pages/TrackDetail";
 import Analyse from "./pages/Analyse";
 import Statistics from "./pages/Statistics";
 import PlaylistCreation from "./pages/PlaylistCreation";
+import Favoris from "./pages/Favoris";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/playlists" element={<Playlists />} />
           <Route path="/playlist/create" element={<PlaylistCreation />} />
+          <Route path="/favoris" element={<Favoris />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

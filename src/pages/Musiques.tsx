@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import { MusicData } from "@/types/music";
@@ -8,6 +9,7 @@ import MusicFilters from "@/components/music/MusicFilters";
 import { Search } from "lucide-react";
 import AddYoutubeTrack from "@/components/music/AddYoutubeTrack";
 import { toast } from "sonner";
+import MusicApiHandler from "@/components/music/MusicApiHandler";
 
 // Sample data - in a real app, this would come from an API
 const sampleTracks: MusicData[] = [
@@ -167,6 +169,9 @@ const Musiques = () => {
           </div>
         </div>
       </div>
+      
+      {/* Add the API handler component */}
+      <MusicApiHandler onAddTrack={handleAddTrack} />
     </AppLayout>
   );
 };
