@@ -6,6 +6,16 @@ interface MusicApiHandlerProps {
   onAddTrack: (track: MusicData) => void;
 }
 
+// Définir un type personnalisé pour notre événement fetch car FetchEvent n'est pas disponible
+interface CustomFetchEvent {
+  request: {
+    url: string;
+    method: string;
+    json: () => Promise<any>;
+  };
+  respondWith: (response: Response) => void;
+}
+
 const MusicApiHandler: React.FC<MusicApiHandlerProps> = ({ onAddTrack }) => {
   useEffect(() => {
     // Create event handler for window.postMessage API (internal communication)
@@ -42,63 +52,52 @@ const MusicApiHandler: React.FC<MusicApiHandlerProps> = ({ onAddTrack }) => {
     const createHttpEndpoint = () => {
       const endpoint = '/addMusic';
       
-      const handleFetch = async (e: FetchEvent) => {
-        // Check if this is our endpoint
-        if (e.request.url.endsWith(endpoint) && e.request.method === 'POST') {
-          try {
-            const requestData = await e.request.json();
-            const response = await new Promise(resolve => {
-              processTrackData(requestData, resolve);
-            });
-            
-            return new Response(JSON.stringify(response), {
+      // Modifié pour ne pas utiliser FetchEvent
+      const handleFetch = async (request: Request): Promise<Response> => {
+        try {
+          const requestData = await request.json();
+          const responseData = await new Promise(resolve => {
+            processTrackData(requestData, resolve);
+          });
+          
+          return new Response(JSON.stringify(responseData), {
+            headers: { 'Content-Type': 'application/json' },
+            status: (responseData as any).success ? 200 : 400
+          });
+        } catch (error) {
+          console.error('Error processing HTTP request:', error);
+          return new Response(
+            JSON.stringify({
+              success: false,
+              error: error instanceof Error ? error.message : 'Unknown error'
+            }),
+            {
               headers: { 'Content-Type': 'application/json' },
-              status: (response as any).success ? 200 : 400
-            });
-          } catch (error) {
-            console.error('Error processing HTTP request:', error);
-            return new Response(
-              JSON.stringify({
-                success: false,
-                error: error instanceof Error ? error.message : 'Unknown error'
-              }),
-              {
-                headers: { 'Content-Type': 'application/json' },
-                status: 400
-              }
-            );
-          }
+              status: 400
+            }
+          );
         }
       };
       
-      // For browsers that support service workers, we can use this:
+      // Pour les navigateurs qui supportent service workers
+      // Note: nous n'utilisons plus FetchEvent directement
       if ('serviceWorker' in navigator) {
         window.addEventListener('fetch', (e: any) => {
-          if (e.request.url.endsWith(endpoint) && e.request.method === 'POST') {
-            e.respondWith(handleFetch(e));
+          if (e.request && e.request.url && e.request.url.endsWith(endpoint) && e.request.method === 'POST') {
+            e.respondWith(handleFetch(e.request));
           }
         });
       }
       
-      // For direct API access using fetch API, we can use this:
+      // Pour l'accès API direct via l'API fetch
       const originalFetch = window.fetch;
       window.fetch = async function(input, init) {
-        const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+        const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input instanceof Request ? input.url : '';
         
         if (url.endsWith(endpoint) && (init?.method === 'POST' || input instanceof Request && input.method === 'POST')) {
           try {
-            const body = init?.body ? 
-              (typeof init.body === 'string' ? JSON.parse(init.body) : init.body) : 
-              (input instanceof Request ? await input.json() : {});
-              
-            return new Promise(resolve => {
-              processTrackData(body, (response) => {
-                resolve(new Response(JSON.stringify(response), {
-                  headers: { 'Content-Type': 'application/json' },
-                  status: response.success ? 200 : 400
-                }));
-              });
-            });
+            const request = input instanceof Request ? input : new Request(url, init);
+            return handleFetch(request);
           } catch (error) {
             console.error('Error in fetch override:', error);
             return new Response(
