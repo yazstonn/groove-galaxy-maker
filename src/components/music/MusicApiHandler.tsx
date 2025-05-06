@@ -1,19 +1,10 @@
+
 import React, { useEffect } from "react";
 import { MusicData } from "@/types/music";
 import { toast } from "sonner";
 
 interface MusicApiHandlerProps {
   onAddTrack: (track: MusicData) => void;
-}
-
-// Définir un type personnalisé pour notre événement fetch car FetchEvent n'est pas disponible
-interface CustomFetchEvent {
-  request: {
-    url: string;
-    method: string;
-    json: () => Promise<any>;
-  };
-  respondWith: (response: Response) => void;
 }
 
 const MusicApiHandler: React.FC<MusicApiHandlerProps> = ({ onAddTrack }) => {
@@ -48,76 +39,6 @@ const MusicApiHandler: React.FC<MusicApiHandlerProps> = ({ onAddTrack }) => {
       }
     };
 
-    // Create HTTP endpoint listener
-    const createHttpEndpoint = () => {
-      const endpoint = '/addMusic';
-      
-      // Modifié pour ne pas utiliser FetchEvent
-      const handleFetch = async (request: Request): Promise<Response> => {
-        try {
-          const requestData = await request.json();
-          const responseData = await new Promise(resolve => {
-            processTrackData(requestData, resolve);
-          });
-          
-          return new Response(JSON.stringify(responseData), {
-            headers: { 'Content-Type': 'application/json' },
-            status: (responseData as any).success ? 200 : 400
-          });
-        } catch (error) {
-          console.error('Error processing HTTP request:', error);
-          return new Response(
-            JSON.stringify({
-              success: false,
-              error: error instanceof Error ? error.message : 'Unknown error'
-            }),
-            {
-              headers: { 'Content-Type': 'application/json' },
-              status: 400
-            }
-          );
-        }
-      };
-      
-      // Pour les navigateurs qui supportent service workers
-      // Note: nous n'utilisons plus FetchEvent directement
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('fetch', (e: any) => {
-          if (e.request && e.request.url && e.request.url.endsWith(endpoint) && e.request.method === 'POST') {
-            e.respondWith(handleFetch(e.request));
-          }
-        });
-      }
-      
-      // Pour l'accès API direct via l'API fetch
-      const originalFetch = window.fetch;
-      window.fetch = async function(input, init) {
-        const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input instanceof Request ? input.url : '';
-        
-        if (url.endsWith(endpoint) && (init?.method === 'POST' || input instanceof Request && input.method === 'POST')) {
-          try {
-            const request = input instanceof Request ? input : new Request(url, init);
-            return handleFetch(request);
-          } catch (error) {
-            console.error('Error in fetch override:', error);
-            return new Response(
-              JSON.stringify({
-                success: false,
-                error: error instanceof Error ? error.message : 'Unknown error'
-              }),
-              {
-                headers: { 'Content-Type': 'application/json' },
-                status: 400
-              }
-            );
-          }
-        }
-        
-        // Otherwise proceed with original fetch
-        return originalFetch.apply(this, [input, init]);
-      };
-    };
-    
     // Process track data function (shared between both APIs)
     const processTrackData = (trackData: any, sendResponse: (response: any) => void) => {
       try {
@@ -168,13 +89,76 @@ const MusicApiHandler: React.FC<MusicApiHandlerProps> = ({ onAddTrack }) => {
       }
     };
 
-    // Initialize both APIs
+    // Setup WebSocket connection
+    const setupWebSocket = () => {
+      const wsUrl = window.location.protocol === 'https:' 
+        ? `wss://${window.location.host}/ws` 
+        : `ws://${window.location.host}/ws`;
+      
+      const socket = new WebSocket(wsUrl);
+      
+      socket.onopen = () => {
+        console.log("WebSocket connection established");
+        toast.success("WebSocket connecté");
+      };
+      
+      socket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          if (data && data.type === 'ADD_MUSIC_TRACK') {
+            processTrackData(data.track, (response) => {
+              // Send response back through the WebSocket
+              if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({
+                  type: 'ADD_MUSIC_TRACK_RESPONSE',
+                  ...response
+                }));
+              }
+            });
+          }
+        } catch (error) {
+          console.error('Error processing WebSocket message:', error);
+          
+          if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+              type: 'ADD_MUSIC_TRACK_RESPONSE',
+              success: false,
+              error: error instanceof Error ? error.message : 'Unknown error'
+            }));
+          }
+        }
+      };
+      
+      socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        toast.error("Erreur de connexion WebSocket");
+      };
+      
+      socket.onclose = (event) => {
+        console.log(`WebSocket connection closed with code ${event.code}`);
+        
+        // Try to reconnect after a delay
+        setTimeout(() => {
+          toast.info("Tentative de reconnexion WebSocket...");
+          setupWebSocket();
+        }, 5000);
+      };
+      
+      // Store socket reference for cleanup
+      return socket;
+    };
+
+    // Initialize APIs
     window.addEventListener('message', handleApiPost);
-    createHttpEndpoint();
+    const socket = setupWebSocket();
 
     // Cleanup function
     return () => {
       window.removeEventListener('message', handleApiPost);
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.close();
+      }
     };
   }, [onAddTrack]);
 

@@ -43,31 +43,32 @@ const Favoris = () => {
     }, 1500);
   };
 
-  // Function to demonstrate HTTP API usage
-  const demonstrateHttpApi = () => {
+  // Function to simulate WebSocket API usage
+  const simulateWebSocketSend = () => {
+    const demoWsUrl = window.location.protocol === 'https:' 
+      ? `wss://${window.location.host}/ws` 
+      : `ws://${window.location.host}/ws`;
+    
+    toast.info(`Simulation WebSocket: connexion à ${demoWsUrl}`);
+    
     const demoTrack = {
-      title: "Demo HTTP API",
-      artist: "Lovable Music API",
+      title: "Demo WebSocket",
+      artist: "Lovable Music WebSocket",
       albumArt: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&auto=format&fit=crop&q=60"
     };
 
-    fetch('/addMusic', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(demoTrack)
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          toast.success("Ajout via HTTP API réussi!");
-          setTimeout(() => navigate('/musiques'), 1500);
-        } else {
-          toast.error(`Erreur: ${data.error}`);
-        }
-      })
-      .catch(error => {
-        toast.error(`Erreur de requête: ${error.message}`);
-      });
+    // Simulate sending via WebSocket
+    // Note: This is just a simulation for the UI demo
+    // In real use, your backend would send this message via WebSocket
+    setTimeout(() => {
+      window.postMessage({
+        type: 'ADD_MUSIC_TRACK',
+        track: demoTrack
+      }, window.location.origin);
+      
+      toast.success("Message WebSocket simulé envoyé");
+      setTimeout(() => navigate('/musiques'), 1500);
+    }, 1000);
   };
 
   return (
@@ -133,8 +134,8 @@ const Favoris = () => {
             </Card>
             
             <div className="mt-4">
-              <Button variant="outline" onClick={demonstrateHttpApi} className="w-full">
-                Tester l'API HTTP
+              <Button variant="outline" onClick={simulateWebSocketSend} className="w-full">
+                Tester l'API WebSocket (simulation)
               </Button>
             </div>
           </TabsContent>
@@ -143,26 +144,29 @@ const Favoris = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>API HTTP (/addMusic)</CardTitle>
+                  <CardTitle>API WebSocket (/ws)</CardTitle>
                   <CardDescription>
-                    Envoyez une requête POST à cette URL depuis votre backend
+                    Connectez-vous au WebSocket pour envoyer des musiques en temps réel
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="mb-4">Pour ajouter une musique via l'API HTTP, envoyez une requête POST à:</p>
+                  <p className="mb-4">Pour ajouter une musique via l'API WebSocket, connectez-vous à:</p>
                   <pre className="bg-secondary p-4 rounded-md overflow-auto text-sm">
-                    {`${window.location.origin}/addMusic`}
+                    {`${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/ws`}
                   </pre>
-                  <p className="mt-4 mb-2">Avec un corps JSON:</p>
+                  <p className="mt-4 mb-2">Puis envoyez un message JSON:</p>
                   <pre className="bg-secondary p-4 rounded-md overflow-auto text-sm">
 {`{
-  "title": "Nom du titre",
-  "artist": "Nom de l'artiste",
-  "albumArt": "URL de l'image",
-  // Champs optionnels:
-  "bpm": 120,
-  "energy": 0.7,
-  // etc...
+  "type": "ADD_MUSIC_TRACK",
+  "track": {
+    "title": "Nom du titre",
+    "artist": "Nom de l'artiste",
+    "albumArt": "URL de l'image",
+    // Champs optionnels:
+    "bpm": 120,
+    "energy": 0.7,
+    // etc...
+  }
 }`}
                   </pre>
                 </CardContent>
